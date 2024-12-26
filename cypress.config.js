@@ -18,7 +18,7 @@ module.exports = defineConfig({
 
       return config;
     },
-    specPattern: '**/*.feature', // Ensures Cypress targets .feature files
+    specPattern: ['**/*.feature', '**/*.cy.js'],
   },
   env: {
     defaultEmail: 'sdetjohnny@gmail.com',
