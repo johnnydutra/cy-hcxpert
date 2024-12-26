@@ -1,5 +1,6 @@
 import { cartModal } from './page-objects/CartModal';
 import { cartPage } from './page-objects/CartPage';
+import { checkoutPage } from './page-objects/CheckoutPage';
 import { landingPage } from './page-objects/LandingPage';
 import { navbar } from './page-objects/Navbar';
 import { productDetailsPage } from './page-objects/ProductDetailsPage';
@@ -50,6 +51,18 @@ Cypress.Commands.add('checkout', () => {
 });
 
 Cypress.Commands.add(
-  'validateOrderData',
-  (productName, productPrice, productQuantity, orderTotal) => {}
+  'verifySingleProductOrderDetails',
+  (productName, productPrice, productQuantity, orderTotal) => {
+    const productTotal = orderTotal;
+    checkoutPage.validateFirstProductName(productName);
+    checkoutPage.validateFirstProductPrice(productPrice);
+    checkoutPage.validateFirstProductQuantity(productQuantity);
+    checkoutPage.validateFirstProductTotal(productTotal);
+    checkoutPage.validateOrderTotal(orderTotal);
+  }
 );
+
+Cypress.Commands.add('emptyCart', () => {
+  navbar.goToCart();
+  cartPage.clearCartItems();
+});

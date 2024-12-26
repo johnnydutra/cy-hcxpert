@@ -4,8 +4,12 @@ Given('I am logged into the Automation Exercise store website', () => {
   cy.login();
 });
 
+Given('I have no products in my shopping cart', () => {
+  cy.emptyCart();
+});
+
 When(
-  'I add a specific product {string} with quantity {int} to the cart',
+  'I add a specific product {string} with quantity {string} to the cart',
   (product, quantity) => {
     cy.searchForProduct(product, true);
     cy.selectProductByName(product);
@@ -18,8 +22,8 @@ When('I proceed to checkout', () => {
 });
 
 Then(
-  'I should be presented with correct product <name>, price {string}, quantity {int} and order total {string} data',
+  'I should be presented with correct product {string}, price {string}, quantity {string} and order total {string} data',
   (product, quantity, price, total) => {
-    checkout.verifyOrderDetails(product, quantity, price, total);
+    cy.verifySingleProductOrderDetails(product, quantity, price, total);
   }
 );
