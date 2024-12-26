@@ -1,14 +1,12 @@
+/// <reference types="cypress" />
+
 class ProductsPage {
   locators = {
     searchInput: '#search_product',
     searchButton: '#submit_search',
-    productCard: {
-      container: '.product-image-wrapper',
-      price: `${this.locators.productCard} .productinfo h2`,
-      title: `${this.locators.productCard} .productinfo p`,
-      addToCart: `${this.locators.productCard} .productinfo add-to-cart`,
-      viewProduct: `${this.locators.productCard} .choose a`,
-    },
+    productCards: '.product-image-wrapper',
+    productName: '.productinfo p',
+    viewProductLink: 'a[href^="/product_details"]',
   };
 
   fillSearchInput(searchTerm) {
@@ -20,8 +18,20 @@ class ProductsPage {
   }
 
   listSizeShouldBe(quantity) {
-    cy.get(this.locators.productCard.container).should('have.length', quantity);
+    cy.get(this.locators.productCards).should('have.length', quantity);
+  }
+
+  accessProductDetails(productName) {
+    cy.get(this.locators.productCards).each(($el) => {
+      cy.wrap($el)
+        .find(this.locators.productName)
+        .invoke('text')
+        .then((name) => {
+          if (name === productName) {
+            cy.wrap($el).find(this.locators.viewProductLink).click();
+          }
+        });
+    });
   }
 }
-
 export const productsPage = new ProductsPage();

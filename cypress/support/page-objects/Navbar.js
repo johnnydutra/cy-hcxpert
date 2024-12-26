@@ -3,6 +3,7 @@ class Navbar {
     homeLink: '.shop-menu a[href="/"]',
     productsLink: '.shop-menu a[href="/products"]',
     cartLink: '.shop-menu a[href="/view_cart"]',
+    signupLoginLink: '.shop-menu a[href="/login"]',
     logoutLink: '.shop-menu a[href="/logout"]',
     deleteAccountLink: '.shop-menu a[href="/delete_account"]',
     testCasesLink: '.shop-menu a[href="/test_cases"]',
@@ -10,7 +11,7 @@ class Navbar {
     videoTutorialsLink:
       '.shop-menu a[href="https://www.youtube.com/c/AutomationExercise"]',
     contactUsLink: '.shop-menu a[href="/contact_us"]',
-    loggedInUser: '.shop-menu a:not([href]) b',
+    loggedInUser: '.shop-menu a:not([href])',
   };
 
   goToHomePage() {
@@ -23,6 +24,10 @@ class Navbar {
 
   goToCart() {
     cy.get(this.locators.cartLink).click();
+  }
+
+  goToLoginPage() {
+    cy.get(this.locators.signupLoginLink).click();
   }
 
   clickLogout() {
@@ -50,7 +55,7 @@ class Navbar {
   }
 
   assertLoggedInUser(name) {
-    cy.get(this.locators.loggedInUser).should('eq', name);
+    cy.get(this.locators.loggedInUser).should('contain', name);
   }
 }
 
