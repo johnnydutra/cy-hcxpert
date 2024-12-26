@@ -1,4 +1,5 @@
 import { cartModal } from './page-objects/CartModal';
+import { cartPage } from './page-objects/CartPage';
 import { landingPage } from './page-objects/LandingPage';
 import { navbar } from './page-objects/Navbar';
 import { productDetailsPage } from './page-objects/ProductDetailsPage';
@@ -11,6 +12,8 @@ Cypress.Commands.add(
     password = Cypress.env('defaultPassword'),
     name = Cypress.env('defaultName')
   ) => {
+    cy.visit(Cypress.env('url'));
+    navbar.goToLoginPage();
     landingPage.fillLoginEmail(email);
     landingPage.fillLoginPassword(password);
     landingPage.clickLoginButton();
@@ -28,10 +31,25 @@ Cypress.Commands.add(
   }
 );
 
-Cypress.Commands.add('checkoutSelectedProduct', (quantity) => {
+Cypress.Commands.add('selectProductByName', (product) => {
+  productsPage.accessProductDetails(product);
+  productDetailsPage.productNameIs(product);
+});
+
+Cypress.Commands.add('addSelectedProductToCart', (quantity) => {
   productDetailsPage.setQuantity(quantity);
   productDetailsPage.clickAddToCartButton();
-  cartModal.isVisible(true);
-  cartModal.clickCartLink();
-  cartModal.isVisible(false);
+  cartModal.assertVisibility(true);
+  cartModal.clickContinueButton();
+  cartModal.assertVisibility(false);
 });
+
+Cypress.Commands.add('checkout', () => {
+  navbar.goToCart();
+  cartPage.clickProceedToCheckoutButton();
+});
+
+Cypress.Commands.add(
+  'validateOrderData',
+  (productName, productPrice, productQuantity, orderTotal) => {}
+);
